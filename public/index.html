@@ -24,7 +24,11 @@
     import { supabase } from './supabaseClient.mjs';
 
     document.getElementById('createLobby').onclick = async () => {
-      const { data, error } = await supabase.from('lobbies').insert({}).select().single();
+        const { data, error } = await supabase
+  .from('lobbies')
+  .insert([{ created_at: new Date().toISOString() }])
+  .select()
+  .single();
       if (error) {
         alert('Erro ao criar lobby');
         return;
