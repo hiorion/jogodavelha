@@ -7,8 +7,12 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Jogo da Velha</h1>
-  <div id="game-board"></div>
+  <main>
+    <h1>Jogo da Velha</h1>
+    <div id="game-board" role="grid" aria-label="Tabuleiro do jogo da velha">
+      <!-- Células serão geradas via JavaScript -->
+    </div>
+  </main>
 
   <script type="module" src="game.js"></script>
 </body>
