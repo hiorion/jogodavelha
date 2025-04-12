@@ -1,3 +1,13 @@
 {
-  "public": "public"
+  "headers": [
+    {
+      "source": "/supabaseClient.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    }
+  ]
 }
