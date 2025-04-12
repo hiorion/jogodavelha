@@ -1,4 +1,4 @@
-import { supabase } from '../public/supabaseClient.mjs';
+import { supabase } from '/public/supabaseClient.mjs';
 
 const urlParams = new URLSearchParams(window.location.search);
 const lobbyId = urlParams.get('lobby');

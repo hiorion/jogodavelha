@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient.mjs';
+import { supabase } from '/supabaseClient.mjs';
 
 const lobbyInput = document.getElementById('lobbyId');
 const enterLobbyBtn = document.getElementById('enterLobby');
