@@ -27,24 +27,39 @@ function updateStatus() {
   statusEl.textContent = isMyTurn ? 'Sua vez!' : 'Aguardando o oponente...';
 }
 
-function makeMove(index) {
+async function makeMove(index) {
   if (!isMyTurn || board[index] !== '') return;
 
-  board[index] = role === 'player1' ? 'X' : 'O';
+  const symbol = role === 'player1' ? 'X' : 'O';
+  board[index] = symbol;
   isMyTurn = false;
   updateStatus();
   renderBoard();
 
-  supabase.from('lobbies').update({ board }).eq('id', lobbyId);
+  // Atualiza o board no Supabase e troca o turno
+  await supabase
+    .from('lobbies')
+    .update({
+      board,
+      turn: role === 'player1' ? 'player2' : 'player1'
+    })
+    .eq('id', lobbyId);
 }
 
-supabase.channel('game-channel')
-  .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'lobbies' }, payload => {
-    if (payload.new.id !== lobbyId) return;
-    board = payload.new.board || board;
-    isMyTurn = payload.new.turn === role;
-    renderBoard();
-  })
+// Canal para ouvir atualizações do Supabase
+supabase
+  .channel('game-channel')
+  .on(
+    'postgres_changes',
+    { event: 'UPDATE', schema: 'public', table: 'lobbies' },
+    (payload) => {
+      if (payload.new.id !== lobbyId) return;
+
+      board = payload.new.board || board;
+      isMyTurn = payload.new.turn === role;
+      renderBoard();
+    }
+  )
   .subscribe();
 
 renderBoard();
