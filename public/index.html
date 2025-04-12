@@ -1,27 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <title>Lobby - Jogo da Velha</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Velha - Lobby</title>
   <link rel="stylesheet" href="style.css" />
-  <script type="module" src="supabaseClient.mjs"></script>
-  <script type="module">
-    import { supabase } from './supabaseClient.mjs';
-    async function createLobby() {
-      const { data, error } = await supabase
-        .from('lobbies')
-        .insert([{ status: 'waiting' }])
-        .select();
-      if (data) {
-        window.location.href = 'game.html?lobby=' + data[0].id;
-      }
-    }
-    window.onload = () => {
-      document.getElementById("createBtn").onclick = createLobby;
-    };
-  </script>
 </head>
 <body>
-  <h1>Jogo da Velha Online</h1>
-  <button id="createBtn">Criar Lobby</button>
+  <h1>Jogo da Velha</h1>
+
+  <div>
+    <button id="createLobby">Criar novo lobby</button>
+  </div>
+
+  <p>ou</p>
+
+  <form id="joinForm">
+    <input type="text" id="lobbyCode" placeholder="Código do lobby" required />
+    <button type="submit">Entrar no lobby</button>
+  </form>
+
+  <script type="module">
+    import { supabase } from './supabaseClient.mjs';
+
+    document.getElementById('createLobby').onclick = async () => {
+      const { data, error } = await supabase.from('lobbies').insert({}).select().single();
+      if (error) {
+        alert('Erro ao criar lobby');
+        return;
+      }
+      const id = data.id;
+      window.location.href = `game.html?lobby=${id}`;
+    };
+
+    document.getElementById('joinForm').onsubmit = (e) => {
+      e.preventDefault();
+      const code = document.getElementById('lobbyCode').value.trim();
+      if (code) {
+        window.location.href = `game.html?lobby=${code}`;
+      }
+    };
+  </script>
 </body>
 </html>
