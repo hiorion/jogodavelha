@@ -2,24 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lobby - Jogo da Velha</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lobby do Jogo da Velha</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
   <h1>❌⭕ Lobby do Jogo da Velha</h1>
-  <div id="lobby-container">
-    <input type="text" id="lobbyId" placeholder="Código da Sala (deixe vazio para criar)" />
-    <button id="enterLobby">Entrar no Lobby</button>
-  </div>
+  <input type="text" id="roomCode" placeholder="Código da Sala (deixe vazio)" />
+  <button id="joinLobby">Entrar no Lobby</button>
 
-  <div id="waiting-room" style="display: none;">
-    <p><strong>Sala:</strong> <span id="currentLobby"></span></p>
-    <p><strong>Você é:</strong> <span id="playerRole"></span></p>
-    <button id="readyBtn">✅ Estou Pronto</button>
-    <p id="status"></p>
-  </div>
-
-  <script type="module" src="lobby.js"></script>
+  <script type="module" src="/lobby.js"></script>
 </body>
 </html>
