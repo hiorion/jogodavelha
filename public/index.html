@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jogo da Velha</title>
+  <title>Lobby - Jogo da Velha</title>
   <link rel="stylesheet" href="style.css" />
+  <script type="module" src="supabaseClient.mjs"></script>
+  <script type="module">
+    import { supabase } from './supabaseClient.mjs';
+    async function createLobby() {
+      const { data, error } = await supabase
+        .from('lobbies')
+        .insert([{ status: 'waiting' }])
+        .select();
+      if (data) {
+        window.location.href = 'game.html?lobby=' + data[0].id;
+      }
+    }
+    window.onload = () => {
+      document.getElementById("createBtn").onclick = createLobby;
+    };
+  </script>
 </head>
 <body>
-  <main>
-    <h1>Jogo da Velha</h1>
-    <div id="game-board" role="grid" aria-label="Tabuleiro do jogo da velha">
-      <!-- Células do jogo serão geradas dinamicamente via script.js -->
-    </div>
-  </main>
-
-  <script type="module" src="script.js"></script>
+  <h1>Jogo da Velha Online</h1>
+  <button id="createBtn">Criar Lobby</button>
 </body>
 </html>

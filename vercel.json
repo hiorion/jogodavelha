@@ -1,13 +1,3 @@
 {
-  "headers": [
-    {
-      "source": "/supabaseClient.js",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/public/index.html" }]
 }

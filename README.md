@@ -1,7 +1,15 @@
-# Jogo da Velha
+# Jogo da Velha Online com Lobby
 
-Este é um jogo da velha simples usando HTML, CSS, JavaScript e Supabase.
+Este é um projeto simples de Jogo da Velha online com suporte a lobbies via Supabase.
 
-## Estrutura
-- `public/`: Arquivos estáticos (HTML, CSS, JS)
-- `src/`: Lógica e cliente do Supabase
+## Como usar
+
+1. Configure um projeto no Supabase com as tabelas:
+- **lobbies**: `id`, `status`
+- **moves**: `id`, `lobby_id`, `index`, `player`
+
+2. Coloque a URL do seu Supabase e a chave `anon` em `public/supabaseClient.mjs`.
+
+3. Faça deploy na Vercel ou rode localmente.
+
+## Feito por ChatGPT 🤖
