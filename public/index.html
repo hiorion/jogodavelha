@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lobby do Jogo da Velha</title>
+  <title>Jogo da Velha</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>❌⭕ Lobby do Jogo da Velha</h1>
-  <input type="text" id="roomCode" placeholder="Código da Sala (deixe vazio)" />
-  <button id="joinLobby">Entrar no Lobby</button>
-
-  <script type="module" src="lobby.js"></script>
+  <div id="game-board" role="grid" aria-label="Tabuleiro do Jogo da Velha">
+    <!-- Células do jogo serão geradas dinamicamente -->
+  </div>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
