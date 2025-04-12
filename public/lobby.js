@@ -14,8 +14,9 @@ let role = '';
 
 // Entrar ou criar lobby
 enterLobbyBtn.addEventListener('click', async () => {
-  lobbyId = lobbyInput.value || crypto.randomUUID();
+  lobbyId = lobbyInput.value.trim() || crypto.randomUUID();
 
+  // Verifica se o lobby já existe
   const { data, error } = await supabase
     .from('lobbies')
     .select('*')
@@ -29,45 +30,39 @@ enterLobbyBtn.addEventListener('click', async () => {
 
   if (!data) {
     // Criar novo lobby
-    await supabase.from('lobbies').insert([{
+    const { error: insertError } = await supabase.from('lobbies').insert([{
       id: lobbyId,
       player1_ready: false,
       player2_ready: false,
       board: Array(9).fill(''),
       turn: 'player1'
     }]);
+
+    if (insertError) {
+      console.error('Erro ao criar lobby:', insertError);
+      return;
+    }
+
     role = 'player1';
   } else {
-    // Entrar como player2
     role = 'player2';
   }
 
+  // Exibir lobby e papel
   currentLobby.textContent = lobbyId;
   playerRoleEl.textContent = role === 'player1' ? '❌' : '⭕';
+
+  // Alternar telas
   lobbyContainer.style.display = 'none';
   waitingRoom.style.display = 'block';
 });
 
-// Sinalizar que está pronto
+// Jogador clica para sinalizar que está pronto
 readyBtn.addEventListener('click', async () => {
-  await supabase
+  const { error } = await supabase
     .from('lobbies')
     .update({ [`${role}_ready`]: true })
     .eq('id', lobbyId);
 
-  statusEl.textContent = '⏳ Aguardando outro jogador...';
-});
-
-// Escutar mudanças no lobby
-supabase.channel('lobby-listener')
-  .on('postgres_changes', {
-    event: 'UPDATE',
-    schema: 'public',
-    table: 'lobbies'
-  }, (payload) => {
-    const lobby = payload.new;
-    if (lobby.id === lobbyId && lobby.player1_ready && lobby.player2_ready) {
-      window.location.href = `game.html?lobby=${lobbyId}&role=${role}`;
-    }
-  })
-  .subscribe();
+  if (error) {
+    console.error('
