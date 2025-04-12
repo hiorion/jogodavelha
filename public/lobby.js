@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient.js';
+import { supabase } from './supabaseClient.mjs';
 
 const lobbyInput = document.getElementById('lobbyId');
 const enterLobbyBtn = document.getElementById('enterLobby');
@@ -65,4 +65,26 @@ readyBtn.addEventListener('click', async () => {
     .eq('id', lobbyId);
 
   if (error) {
-    console.error('
+    console.error('Erro ao sinalizar prontidão:', error);
+    return;
+  }
+
+  statusEl.textContent = '⏳ Aguardando outro jogador...';
+});
+
+// Escutar mudanças no lobby atual
+supabase
+  .channel(`lobby-listener-${lobbyId}`)
+  .on('postgres_changes', {
+    event: 'UPDATE',
+    schema: 'public',
+    table: 'lobbies',
+    filter: `id=eq.${lobbyId}`
+  }, (payload) => {
+    const lobby = payload.new;
+    if (lobby.player1_ready && lobby.player2_ready) {
+      // Inicia o jogo se ambos estiverem prontos
+      window.location.href = `game.html?lobby=${lobbyId}&role=${role}`;
+    }
+  })
+  .subscribe();
